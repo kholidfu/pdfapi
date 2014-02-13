@@ -1,12 +1,20 @@
+#!/usr/bin/env python
+
+"""
+What you need to run this:
+1. zipped app/ run.py and uwsgi.ini
+2. default file which contain nginx conf
+3. id_rsa.pub to connect to server without password prompt
+4. 
+"""
+
 # fabric thing
 from fabric.api import *
 from fabric.tasks import execute
 from farmers import Farmers
 
 f = Farmers()
-
 env.hosts = [f.droplet_ip()]
-
 
 # as root
 def create_user():
@@ -30,7 +38,6 @@ def create_venv():
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
     run("virtualenv hotoid.com")
-    run("virtualenv htmlkepdf.com")
 
 def install_packages_venv():
     """ install flask uwsgi unidecode"""
@@ -68,4 +75,3 @@ def run_the_site():
     with lcd("/home/sopier/hotoid.com"):
         with path("/home/sopier/hotoid.com/bin/", behavior="prepend"):
             run("nohup uwsgi uwsgi.ini &")
-
