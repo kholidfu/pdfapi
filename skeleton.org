@@ -1,9 +1,6 @@
 * Project Skeleton
   This project aims to build a simple RESTFUL API using Python, Flask, and
   MongoDB
-* Challenges
-** Unique results
-** Huge enough database with full-text support
 * Fast Deployment
 ** Fast deployment (using DO and namecheap API)
    First, we have to develop (templating) in localhost, once it done, we can
@@ -177,3 +174,6 @@
 
 All of this code was *untested*, so make sure to learn the code before you use
 them!
+* Challenges
+** Unique results
+** Huge enough database with full-text support
