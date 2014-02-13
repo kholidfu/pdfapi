@@ -11,9 +11,11 @@
    What we need:
 *** DO API
     create new droplet, specs:
-    - [ ] ubuntu 13.10 x64
+    - [ ] ubuntu 13.10 x64 (1505699)
       #+BEGIN_SRC python
+        from dop.client import Client
         
+        client = Client('client_id', 'api_key')        
         print([image.to_json() for image in client.images()])
         """
         [{'distribution': u'CentOS', 'id': 1601, 'name': u'CentOS 5.8 x64'},
@@ -58,7 +60,7 @@
         
       #+END_SRC
       
-    - [ ] region new york
+    - [ ] region new york (1)
       #+BEGIN_SRC python
         from dop.client import Client
         
@@ -75,7 +77,7 @@
             ]
             """
     #+END_SRC
-    - [ ] smallest $5
+    - [ ] smallest $5 (66)
       #+BEGIN_SRC python
         from dop.client import Client
         
