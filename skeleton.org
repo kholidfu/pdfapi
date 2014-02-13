@@ -107,13 +107,66 @@
 
       adding domains record (request to this [[https://api.digitalocean.com/domains/new?client_id%3D%5Byour_client_id%5D&api_key%3D%5Byour_api_key%5D&name%3D%5Bdomain%5D&ip_address%3D%5Bip_address%5D][url]])
 *** Namecheap API
-    use to setup nameserver only
+    after all done with DO, now it's time to setup nameserver on namecheap
 
     http://developer.namecheap.com/docs/doku.php?id=api-reference:index
 *** Fabric to setup server
     Use to setup:
+    - [ ] logging into server
+
+      #+BEGIN_SRC python
+        #fabfile.py
+        
+        from fabric.api import *
+        
+        env.hosts = ["example.com"]
+        env.user = "root"
+        env.key_filename = "/home/banteng/.ssh/id_rsa"
+        
+        def testlive():
+            run("uname -a")       #fabfile.py
+        
+        from fabric.api import *
+        
+        env.hosts = ["example.com"]
+        env.user = "root"
+        env.key_filename = "/home/banteng/.ssh/id_rsa"
+        
+        def testlive():
+            run("uname -a")      
+      #+END_SRC
+
     - [ ] adding user
+      #+BEGIN_SRC python
+        #fabfile.py
+        
+        from fabric.api import *
+        
+        env.hosts = ["example.com"]
+        env.user = "root"
+        env.key_filename = "/home/banteng/.ssh/id_rsa"
+        
+        def adduser():
+            run("adduser sopier")
+            run("adduser sopier sudo")
+        
+      #+END_SRC
+
     - [ ] installing needed package
+      #+BEGIN_SRC python
+        #fabfile.py
+        
+        from fabric.api import *
+        
+        env.hosts = ["example.com"]
+        env.user = "root"
+        env.key_filename = "/home/banteng/.ssh/id_rsa"
+        
+        def installpackage():
+            run("apt-get install build-essential python-dev python-pip nginx")
+            run("pip install virtualenv")
+      #+END_SRC
+
     - [ ] add / edit virtualhost into nginx
     - [ ] setup uwsgi
     - [ ] scp from localhost
