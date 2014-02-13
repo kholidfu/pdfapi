@@ -121,7 +121,6 @@
 
       #+BEGIN_SRC python
         #fabfile.py
-        
         from fabric.api import *
         
         env.hosts = ["example.com"]
@@ -129,16 +128,7 @@
         env.key_filename = "/home/banteng/.ssh/id_rsa"
         
         def testlive():
-            run("uname -a")       #fabfile.py
-        
-        from fabric.api import *
-        
-        env.hosts = ["example.com"]
-        env.user = "root"
-        env.key_filename = "/home/banteng/.ssh/id_rsa"
-        
-        def testlive():
-            run("uname -a")      
+            run("uname -a")
       #+END_SRC
 
     - [ ] adding user
