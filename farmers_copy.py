@@ -1,18 +1,10 @@
 #!/usr/bin/env python
 # author: @sopier
 """
-yang harus disiapkan domain, dalam digunakan 5 domain
-
 Steps
 1. create droplet
 satu droplet diisi 5 domain, berarti ketika add domain di DO, semua
 dipointing ke IP droplet baru tersebut
-
-api call
-https://api.digitalocean.com/domains/new?client_id=[your_client_id]&api_key=[your_api_key]&name=[domain]&ip_address=[ip_address]
-
-domain sesuai domain di atas, ip tetep 1
-
 2. pastikan di namecheap sudah dipointing ke dns digitalocean
 3. setting server dan menghidupkan satu persatu domainnya
 mulai tahap ini sebisa mungkin kita tidak hard login ke server, cukup dari
