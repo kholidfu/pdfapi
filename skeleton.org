@@ -1,0 +1,4 @@
+* Project Skeleton
+  This project aims to build a simple RESTFUL API using Python, Flask, and
+  MongoDB
+** Process
