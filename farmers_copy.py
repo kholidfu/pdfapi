@@ -1,12 +1,7 @@
+#!/usr/bin/env python
+# author: @sopier
 """
 yang harus disiapkan domain, dalam digunakan 5 domain
-============
-selyrics.com
-soundrenalin.org
-soundrenalin.com
-blankons.com
-blankons.biz
-=============
 
 Steps
 1. create droplet
