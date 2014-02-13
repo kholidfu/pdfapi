@@ -94,11 +94,21 @@
          {'id': 70, 'name': u'48GB'},
          {'id': 69, 'name': u'64GB'},
          {'id': 68, 'name': u'96GB'}]
-         """
-        
+         """        
       #+END_SRC
+      To create new droplet use script below: ubuntu 64bit 13.10, ny1, 512:
+
+      #+BEGIN_SRC python
+        from dop.client import Client
+        
+        client = Client('client_id', 'api_key')
+        client.create_droplet("test", 66, 1505699, 1)
+      #+END_SRC
+
+      adding domains record (request to this [[https://api.digitalocean.com/domains/new?client_id%3D%5Byour_client_id%5D&api_key%3D%5Byour_api_key%5D&name%3D%5Bdomain%5D&ip_address%3D%5Bip_address%5D][url]])
 *** Namecheap API
     use to setup nameserver only
+
     http://developer.namecheap.com/docs/doku.php?id=api-reference:index
 *** Fabric to setup server
     Use to setup:
