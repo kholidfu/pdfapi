@@ -112,6 +112,11 @@
     http://developer.namecheap.com/docs/doku.php?id=api-reference:index
 *** Fabric to setup server
     Use to setup:
+    - [ ] copy keyfile into our new server, so we can logging in without
+      entering password anymore
+      #+BEGIN_SRC sh
+        ssh-copy-id -i ~/.ssh/id_rsa.pub user@www.example.com
+      #+END_SRC
     - [ ] logging into server
 
       #+BEGIN_SRC python
