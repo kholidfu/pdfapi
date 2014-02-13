@@ -1,4 +1,42 @@
 * Project Skeleton
   This project aims to build a simple RESTFUL API using Python, Flask, and
   MongoDB
-** Process
+* Challenges
+** Unique results
+** Huge enough database with full-text support
+* Fast Deployment
+** Fast deployment (using DO and namecheap API)
+   First, we have to develop (templating) in localhost, once it done, we can
+   deploy it to the server with a single keystroke.
+   What we need:
+*** DO API
+    create new droplet, specs:
+    - [ ] ubuntu 13.10 x64
+    - [ ] region new york
+      #+BEGIN_SRC python
+        from dop.client import Client
+        
+        client = Client('client_id', 'api_key')
+        print([region.to_json() for region in client.regions()])
+        """
+        [
+            {'id': 1, 'name': u'New York 1'},
+            {'id': 2, 'name': u'Amsterdam 1'},
+            {'id': 3, 'name': u'San Francisco 1'},
+            {'id': 4, 'name': u'New York 2'},
+            {'id': 5, 'name': u'Amsterdam 2'},
+            {'id': 6, 'name': u'Singapore 1'}
+            ]
+            """
+    #+END_SRC
+    - [ ] smallest $5
+*** Namecheap API
+    use to setup nameserver only
+*** Fabric to setup server
+    Use to setup:
+    - [ ] adding user
+    - [ ] installing needed package
+    - [ ] add / edit virtualhost into nginx
+    - [ ] setup uwsgi
+    - [ ] scp from localhost
+    - [ ] run the apps!
