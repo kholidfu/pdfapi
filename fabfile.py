@@ -55,8 +55,17 @@ def setup_nginx():
     rm default
     cp default from localhost
     """
-    pass
+    env.user = "root"
+    env.key_filename = "/home/banteng/.ssh/id_rsa"
+    local("scp /tmp/default root@" + f.droplet_ip() + ":")
+    run("rm /etc/nginx/sites-available/default")
+    run("cp default /etc/nginx/sites/")
 
 def run_the_site():
     """ run the site!"""
-    pass
+    env.user = "sopier"
+    env.key_filename = "/home/banteng/.ssh/id_rsa"
+    with lcd("/home/sopier/hotoid.com"):
+        with path("/home/sopier/hotoid.com/bin/", behavior="prepend"):
+            run("nohup uwsgi uwsgi.ini &")
+
