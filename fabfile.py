@@ -27,11 +27,27 @@ def install_packages():
 
 def create_venv():
     """ tiap domain dibuatkan virtualenv sendiri2"""
-    pass
+    env.user = "sopier"
+    env.key_filename = "/home/banteng/.ssh/id_rsa"
+    run("virtualenv hotoid.com")
+    run("virtualenv htmlkepdf.com")
 
 def install_packages_venv():
     """ install flask uwsgi unidecode"""
-    pass
+    env.user = "sopier"
+    env.key_filename = "/home/banteng/.ssh/id_rsa"
+    with lcd("/home/sopier/hotoid.com"):
+        with path("/home/sopier/hotoid.com/bin/", behavior="prepend"):
+            run("pip install flask uwsgi unidecode")
+
+def upload_package():
+    """upload folder app/ run.py and uwsgi.ini from localhost"""
+    env.user = "sopier"
+    env.key_filename = "/home/banteng/.ssh/id_rsa"
+    local("scp /tmp/generic/hotoid.com.tar.gz sopier@" + f.droplet_ip())
+    run("mv hotoid.com.tar.gz hotoid.com")
+    run("tar zxvf hotoid.com.tar.gz")
+    run("rm hotoid.com.tar.gz")
 
 def edit_run():
     """ edit the run.py file"""
