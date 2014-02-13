@@ -99,6 +99,7 @@
       #+END_SRC
 *** Namecheap API
     use to setup nameserver only
+    http://developer.namecheap.com/docs/doku.php?id=api-reference:index
 *** Fabric to setup server
     Use to setup:
     - [ ] adding user
