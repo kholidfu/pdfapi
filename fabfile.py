@@ -44,18 +44,11 @@ def upload_package():
     """upload folder app/ run.py and uwsgi.ini from localhost"""
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    local("scp /tmp/generic/hotoid.com.tar.gz sopier@" + f.droplet_ip())
-    run("mv hotoid.com.tar.gz hotoid.com")
-    run("tar zxvf hotoid.com.tar.gz")
-    run("rm hotoid.com.tar.gz")
+    local("scp /tmp/generic/hotoid.com.tar.gz sopier@" + f.droplet_ip() + ":")
 
-def edit_run():
-    """ edit the run.py file"""
-    pass
-
-def create_uwsgi():
-    """ create uwsgi.ini"""
-    pass
+    run("mv hotoid.com.tar.gz hotoid.com/")
+    run("cd hotoid.com/ && tar zxvf hotoid.com.tar.gz")
+    run("cd hotoid.com/ && rm hotoid.com.tar.gz")
 
 def setup_nginx():
     """
