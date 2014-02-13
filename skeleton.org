@@ -171,3 +171,6 @@
     - [ ] setup uwsgi
     - [ ] scp from localhost
     - [ ] run the apps!
+
+All of this code was *untested*, so make sure to learn the code before you use
+them!
