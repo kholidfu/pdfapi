@@ -12,6 +12,70 @@
 *** DO API
     create new droplet, specs:
     - [ ] ubuntu 13.10 x64
+      #+BEGIN_SRC python
+        
+        print([image.to_json() for image in client.images()])
+        """
+        [{'distribution': u'CentOS', 'id': 1601, 'name': u'CentOS 5.8 x64'},
+         {'distribution': u'CentOS', 'id': 1602, 'name': u'CentOS 5.8 x32'},
+         {'distribution': u'Debian', 'id': 12573, 'name': u'Debian 6.0 x64'},
+         {'distribution': u'Debian', 'id': 12575, 'name': u'Debian 6.0 x32'},
+         {'distribution': u'Ubuntu', 'id': 14097, 'name': u'Ubuntu 10.04 x64'},
+         {'distribution': u'Ubuntu', 'id': 14098, 'name': u'Ubuntu 10.04 x32'},
+         {'distribution': u'Fedora', 'id': 32387, 'name': u'Fedora 17 x32'},
+         {'distribution': u'Fedora', 'id': 32399, 'name': u'Fedora 17 x32 Desktop'},
+         {'distribution': u'Fedora', 'id': 32419, 'name': u'Fedora 17 x64 Desktop'},
+         {'distribution': u'Fedora', 'id': 32428, 'name': u'Fedora 17 x64'},
+         {'distribution': u'Debian', 'id': 303619, 'name': u'Debian 7.0 x32'},
+         {'distribution': u'Debian', 'id': 308287, 'name': u'Debian 7.0 x64'},
+         {'distribution': u'Ubuntu', 'id': 345791, 'name': u'Ubuntu 13.04 x32'},
+         {'distribution': u'Ubuntu', 'id': 350076, 'name': u'Ubuntu 13.04 x64'},
+         {'distribution': u'Arch Linux',
+          'id': 350424,
+          'name': u'Arch Linux 2013.05 x64'},
+         {'distribution': u'Arch Linux',
+          'id': 361740,
+          'name': u'Arch Linux 2013.05 x32'},
+         {'distribution': u'CentOS', 'id': 376568, 'name': u'CentOS 6.4 x32'},
+         {'distribution': u'Ubuntu', 'id': 433240, 'name': u'Ubuntu 12.10 x32'},
+         {'distribution': u'Ubuntu', 'id': 459444, 'name': u'LAMP on Ubuntu 12.04'},
+         {'distribution': u'Ubuntu', 'id': 473123, 'name': u'Ubuntu 12.10 x64'},
+         {'distribution': u'Ubuntu',
+          'id': 473136,
+          'name': u'Ubuntu 12.10 x64 Desktop'},
+         {'distribution': u'CentOS', 'id': 562354, 'name': u'CentOS 6.4 x64'},
+         {'distribution': u'Fedora', 'id': 696598, 'name': u'Fedora 19 x64'},
+         {'distribution': u'Fedora', 'id': 697056, 'name': u'Fedora 19 x32'},
+         {'distribution': u'Ubuntu', 'id': 962304, 'name': u'Ubuntu 13.10 x32'},
+         {'distribution': u'Ubuntu',
+          'id': 1061995,
+          'name': u'Wordpress on Ubuntu 12.10'},
+         {'distribution': u'Ubuntu', 'id': 1420643, 'name': u'MEAN on Ubuntu 12.04.3'},
+         {'distribution': u'Ubuntu', 'id': 1505447, 'name': u'Ubuntu 12.04.3 x64'},
+         {'distribution': u'Ubuntu', 'id': 1505527, 'name': u'Ubuntu 12.04.3 x32'},
+         {'distribution': u'Ubuntu', 'id': 1505699, 'name': u'Ubuntu 13.10 x64'},
+         {'distribution': u'Ubuntu',
+          'id': 1608711,
+          'name': u'Ruby on Rails on Ubuntu 12.10 (Nginx + Unicorn)'},
+         {'distribution': u'CentOS', 'id': 1646467, 'name': u'CentOS 6.5 x64'},
+         {'distribution': u'CentOS', 'id': 1646732, 'name': u'CentOS 6.5 x32'},
+         {'distribution': u'Ubuntu',
+          'id': 1687372,
+          'name': u'Redmine on Ubuntu 12.04'},
+         {'distribution': u'Ubuntu',
+          'id': 1860934,
+          'name': u'Ghost 0.4.0 on Ubuntu 12.04'},
+         {'distribution': u'Ubuntu', 'id': 2105243, 'name': u'GitLab 6.5.1 CE'},
+         {'distribution': u'Ubuntu',
+          'id': 2118237,
+          'name': u'Dokku-v0.2.1 on Ubuntu 13.04'},
+         {'distribution': u'Ubuntu',
+          'id': 2158507,
+          'name': u'Docker 0.8 Ubuntu 13.04 x64'}]
+        """
+        
+      #+END_SRC
+      
     - [ ] region new york
       #+BEGIN_SRC python
         from dop.client import Client
@@ -30,6 +94,25 @@
             """
     #+END_SRC
     - [ ] smallest $5
+      #+BEGIN_SRC python
+        from dop.client import Client
+        
+        client = Client('client_id', 'api_key')      
+        print([size.to_json() for size in client.sizes()])
+        """
+        [{'id': 66, 'name': u'512MB'},
+         {'id': 63, 'name': u'1GB'},
+         {'id': 62, 'name': u'2GB'},
+         {'id': 64, 'name': u'4GB'},
+         {'id': 65, 'name': u'8GB'},
+         {'id': 61, 'name': u'16GB'},
+         {'id': 60, 'name': u'32GB'},
+         {'id': 70, 'name': u'48GB'},
+         {'id': 69, 'name': u'64GB'},
+         {'id': 68, 'name': u'96GB'}]
+         """
+        
+      #+END_SRC
 *** Namecheap API
     use to setup nameserver only
 *** Fabric to setup server
