@@ -163,9 +163,17 @@
       #+END_SRC
 
     - [ ] add / edit virtualhost into nginx
+      Make a =default= file in localhost, complete with all the setup needed
+      for =nginx=, then upload into server. Then rm the original file
+      in =/etc/nginx/sites-available/default= with our newly created from
+      local file.
     - [ ] setup uwsgi
-    - [ ] scp from localhost
+      Same with the above step
     - [ ] run the apps!
+      #+BEGIN_SRC sh
+        cd /home/sopier/example.com
+        nohup uwsgi uwsgi.ini &
+      #+END_SRC
 
 All of this code was *untested*, so make sure to learn the code before you use
 them!
