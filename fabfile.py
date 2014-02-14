@@ -32,7 +32,7 @@ def install_packages():
     env.key_filename = "/home/banteng/.ssh/id_rsa"
     run("sudo apt-get install build-essential python-dev" \
         " python-pip nginx emacs24-nox")
-    run("sudo pip install virtualenv")
+    run("sudo pip install virtualenv supervisor")
 
 def create_venv(domain):
     """ tiap domain dibuatkan virtualenv sendiri2, misal example.com"""
@@ -78,6 +78,9 @@ def run_the_site(domain):
 
 """
 todo:
-1. coba supervisord pake yang inside virtualenv
-2. conf nya pake yang didalam home/sopier/domain aja
+1. coba supervisord pake yang inside virtualenv :: gak isa harus
+via sudo pip install supervisor
+2. conf nya pake yang didalam home/sopier/domain aja :: sukses
+3. ketika conf ada program baru, cukup jalankan supervisord reread
+http://www.onurguzel.com/supervisord-restarting-and-reloading/
 """
