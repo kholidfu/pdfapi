@@ -18,20 +18,21 @@ from farmers import Farmers
 f = Farmers()
 env.hosts = [f.droplet_ip()]
 
-def create_user(user):
+def create_user():
     env.user = "root"
-    run("adduser " + user)
-    run("adduser " + user + " sudo")
+    run("adduser sopier")
+    run("adduser sopier sudo")
 
 def create_key():
     local("ssh-copy-id -i /home/banteng/.ssh/id_rsa.pub sopier@" \
           + f.droplet_ip())
 
 def install_packages():
-    env.user = "root"
+    env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    run("apt-get install build-essential python-dev" \
-        " python-pip nginx emacs24-nox && pip install virtualenv")
+    run("sudo apt-get install build-essential python-dev" \
+        " python-pip nginx emacs24-nox")
+    run("sudo pip install virtualenv")
 
 def create_venv(domain):
     """ tiap domain dibuatkan virtualenv sendiri2, misal example.com"""
@@ -47,15 +48,15 @@ def install_packages_venv(domain):
         with path("/home/sopier/" + domain + "/bin/", behavior="prepend"):
             run("pip install flask uwsgi unidecode")
 
-def upload_package(f, domain):
+def upload_package(package, domain):
     """upload folder app/ run.py and uwsgi.ini from localhost"""
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    local("scp /tmp/generic/" + f + " sopier@" + f.droplet_ip() + ":")
+    local("scp " + package + " sopier@" + f.droplet_ip() + ":")
 
-    run("mv " + f + " " + domain + "/")
-    run("cd " + domain + " && tar zxvf " + f)
-    run("cd " + domain + " && rm " + f)
+    run("mv " + package + " " + domain + "/")
+    run("cd " + domain + " && tar zxvf " + package)
+    run("cd " + domain + " && rm " + package)
 
 def setup_nginx():
     """
@@ -64,14 +65,15 @@ def setup_nginx():
     """
     env.user = "root"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    local("scp /tmp/default root@" + f.droplet_ip() + ":")
-    run("rm /etc/nginx/sites-available/default")
-    run("cp default /etc/nginx/sites/")
+    local("scp default root@" + f.droplet_ip() \
+          + ":/etc/nginx/sites-available/default")
+    run("service nginx restart")
 
 def run_the_site(domain):
     """ run the site!"""
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    with lcd("/home/sopier/" + domain):
-        with path("/home/sopier/" + domain + "/bin/", behavior="prepend"):
-            run("nohup uwsgi uwsgi.ini &")
+    local("scp run.sh sopier@" + f.droplet_ip() + ":")
+    run("tmux kill-session -t foo")
+    run("tmux new -d -s foo")
+    run("tmux send -t foo.0 `./run.sh " + domain + "` ENTER")
