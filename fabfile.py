@@ -33,29 +33,29 @@ def install_packages():
         " python-pip nginx emacs24-nox")
     run("sudo pip install virtualenv")
 
-def create_venv():
-    """ tiap domain dibuatkan virtualenv sendiri2"""
+def create_venv(domain):
+    """ tiap domain dibuatkan virtualenv sendiri2, misal example.com"""
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    run("virtualenv hotoid.com")
+    run("virtualenv " + domain)
 
-def install_packages_venv():
+def install_packages_venv(domain):
     """ install flask uwsgi unidecode"""
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    with lcd("/home/sopier/hotoid.com"):
-        with path("/home/sopier/hotoid.com/bin/", behavior="prepend"):
+    with lcd("/home/sopier/" + domain):
+        with path("/home/sopier/" + domain + "/bin/", behavior="prepend"):
             run("pip install flask uwsgi unidecode")
 
-def upload_package():
+def upload_package(f, domain):
     """upload folder app/ run.py and uwsgi.ini from localhost"""
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    local("scp /tmp/generic/hotoid.com.tar.gz sopier@" + f.droplet_ip() + ":")
+    local("scp /tmp/generic/" + f + " sopier@" + f.droplet_ip() + ":")
 
-    run("mv hotoid.com.tar.gz hotoid.com/")
-    run("cd hotoid.com/ && tar zxvf hotoid.com.tar.gz")
-    run("cd hotoid.com/ && rm hotoid.com.tar.gz")
+    run("mv " + f + " " + domain + "/")
+    run("cd " + domain + " && tar zxvf " + f)
+    run("cd " + domain + " && rm " + f)
 
 def setup_nginx():
     """
@@ -68,10 +68,10 @@ def setup_nginx():
     run("rm /etc/nginx/sites-available/default")
     run("cp default /etc/nginx/sites/")
 
-def run_the_site():
+def run_the_site(domain):
     """ run the site!"""
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    with lcd("/home/sopier/hotoid.com"):
-        with path("/home/sopier/hotoid.com/bin/", behavior="prepend"):
+    with lcd("/home/sopier/" + domain):
+        with path("/home/sopier/" + domain + "/bin/", behavior="prepend"):
             run("nohup uwsgi uwsgi.ini &")
