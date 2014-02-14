@@ -1,11 +1,13 @@
 #!/usr/bin/env python
-
+# author: @sopier
 """
+Automate server deployment
+
 What you need to run this:
 1. zipped app/ run.py and uwsgi.ini
 2. default file which contain nginx conf
 3. id_rsa.pub to connect to server without password prompt
-4. 
+4.
 """
 
 # fabric thing
@@ -16,22 +18,20 @@ from farmers import Farmers
 f = Farmers()
 env.hosts = [f.droplet_ip()]
 
-# as root
-def create_user():
+def create_user(user):
     env.user = "root"
-    run("adduser sopier")
-    run("adduser sopier sudo")
+    run("adduser " + user)
+    run("adduser " + user + " sudo")
 
 def create_key():
     local("ssh-copy-id -i /home/banteng/.ssh/id_rsa.pub sopier@" \
           + f.droplet_ip())
 
 def install_packages():
-    env.user = "sopier"
+    env.user = "root"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    run("sudo apt-get install build-essential python-dev" \
-        " python-pip nginx emacs24-nox")
-    run("sudo pip install virtualenv")
+    run("apt-get install build-essential python-dev" \
+        " python-pip nginx emacs24-nox && pip install virtualenv")
 
 def create_venv(domain):
     """ tiap domain dibuatkan virtualenv sendiri2, misal example.com"""
