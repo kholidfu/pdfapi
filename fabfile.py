@@ -73,7 +73,11 @@ def run_the_site(domain):
     """ run the site!"""
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    local("scp run.sh sopier@" + f.droplet_ip() + ":")
-    run("tmux kill-session -t foo")
-    run("tmux new -d -s foo")
-    run("tmux send -t foo.0 `./run.sh " + domain + "` ENTER")
+    local("scp supervisord.conf sopier@" + f.droplet_ip() + ":")
+    run("sudo supervisord -c supervisord.conf")
+
+"""
+todo:
+1. coba supervisord pake yang inside virtualenv
+2. conf nya pake yang didalam home/sopier/domain aja
+"""
