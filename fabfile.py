@@ -21,12 +21,13 @@ env.hosts = [f.droplet_ip()]
 
 def create_user():
     env.user = "root"
+    run("userdel -r sopier")
     run("adduser sopier")
     run("adduser sopier sudo")
 
 def create_key():
     """ delete old keys and generate new one"""
-    local("rm ~/.ssh/known_hosts")
+    local("> ~/.ssh/known_hosts")
     local("ssh-copy-id -i /home/banteng/.ssh/id_rsa.pub sopier@" \
           + f.droplet_ip())
 
@@ -79,12 +80,14 @@ def run_the_site(domain):
     local("scp supervisord.conf run.py sopier@" + f.droplet_ip() + ":/home/sopier/" + domain)
     run("cd /home/sopier/" + domain + " && sudo supervisord")
 
-def deploy():
+def deploy_server():
     create_user()
     create_key()
     install_packages()
-    create_venv("hotoid.com")
-    install_packages_venv("hotoid.com")
-    upload_package("hotoid.com.tar.gz", "hotoid.com")
+
+def deploy_site(site):
+    create_venv(site)
+    install_packages_venv(site)
+    upload_package(site + ".tar.gz", site)
     setup_nginx()
-    run_the_site("hotoid.com")
+    run_the_site(site)
