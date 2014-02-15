@@ -8,6 +8,7 @@ What you need to run this:
 2. default file which contain nginx conf
 3. id_rsa.pub to connect to server without password prompt
 4. supervisord.conf file
+5. bikin run.py baru dengan if __name__
 """
 
 # fabric thing
@@ -24,6 +25,8 @@ def create_user():
     run("adduser sopier sudo")
 
 def create_key():
+    """ delete old keys and generate new one"""
+    local("rm ~/.ssh/known_hosts")
     local("ssh-copy-id -i /home/banteng/.ssh/id_rsa.pub sopier@" \
           + f.droplet_ip())
 
@@ -46,7 +49,7 @@ def install_packages_venv(domain):
     env.key_filename = "/home/banteng/.ssh/id_rsa"
     with lcd("/home/sopier/" + domain):
         with path("/home/sopier/" + domain + "/bin/", behavior="prepend"):
-            run("pip install flask uwsgi unidecode")
+            run("pip install flask uwsgi unidecode pymongo")
 
 def upload_package(package, domain):
     """upload folder app/ run.py and uwsgi.ini from localhost"""
@@ -67,11 +70,21 @@ def setup_nginx():
     env.key_filename = "/home/banteng/.ssh/id_rsa"
     local("scp default root@" + f.droplet_ip() \
           + ":/etc/nginx/sites-available/default")
-    run("service nginx restart")
+    sudo("/etc/init.d/nginx restart")
 
 def run_the_site(domain):
     """ run the site!"""
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    local("scp supervisord.conf sopier@" + f.droplet_ip() + ":/home/sopier/" + domain)
+    local("scp supervisord.conf run.py sopier@" + f.droplet_ip() + ":/home/sopier/" + domain)
     run("cd /home/sopier/" + domain + " && sudo supervisord")
+
+def deploy():
+    create_user()
+    create_key()
+    install_packages()
+    create_venv("hotoid.com")
+    install_packages_venv("hotoid.com")
+    upload_package("hotoid.com.tar.gz", "hotoid.com")
+    setup_nginx()
+    run_the_site("hotoid.com")
