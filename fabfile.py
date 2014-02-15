@@ -22,7 +22,7 @@ env.hosts = [f.droplet_ip()]
 
 def add_domain(site):
     """ adding domain to DO"""
-    f.add_domains(site)
+    f.add_domain(site)
 
 def create_user():
     env.user = "root"
