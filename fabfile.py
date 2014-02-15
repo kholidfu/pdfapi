@@ -75,12 +75,3 @@ def run_the_site(domain):
     env.key_filename = "/home/banteng/.ssh/id_rsa"
     local("scp supervisord.conf sopier@" + f.droplet_ip() + ":/home/sopier/" + domain)
     run("cd /home/sopier/" + domain + " && sudo supervisord")
-
-"""
-todo:
-1. coba supervisord pake yang inside virtualenv :: gak isa harus
-via sudo pip install supervisor
-2. conf nya pake yang didalam home/sopier/domain aja :: sukses
-3. ketika conf ada program baru, cukup jalankan supervisord reread
-http://www.onurguzel.com/supervisord-restarting-and-reloading/
-"""
