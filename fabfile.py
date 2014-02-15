@@ -7,7 +7,7 @@ What you need to run this:
 1. zipped app/ run.py and uwsgi.ini
 2. default file which contain nginx conf
 3. id_rsa.pub to connect to server without password prompt
-4.
+4. supervisord.conf file
 """
 
 # fabric thing
