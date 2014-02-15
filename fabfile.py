@@ -7,8 +7,11 @@ What you need to run this:
 1. zipped app/ run.py and uwsgi.ini
 2. default file which contain nginx conf
 3. id_rsa.pub to connect to server without password prompt
-4. supervisord.conf file
+4. supervisord.conf file ditaruh di /home/sopier :: not yet
 5. bikin run.py baru dengan if __name__
+
+todo:
+1. change server_names_hash_bucket_size 64 di /etc/nginx/nginx.conf :: not yet
 """
 
 # fabric thing
@@ -77,14 +80,18 @@ def set_supervisor(domain):
     """ setup for supervisor """
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    local("scp supervisord.conf run.py sopier@" + f.droplet_ip() + ":/home/sopier/" + domain)
+    local("scp run.py sopier@" + f.droplet_ip() + ":/home/sopier/" + domain)
+    local("scp supervisord.conf sopier@" + f.droplet_ip() + ":")
 
-def run_site(domain):
+def run_site():
     """ run the site """
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    run("cd /home/sopier/" + domain + " && sudo supervisor "\
-        " supervisor stop && sudo supervisor start")
+    try:
+        run("sudo pkill supervisord")
+    except:
+        pass
+    run("sudo supervisord -c supervisord.conf")
 
 def setup_server():
     create_user()
