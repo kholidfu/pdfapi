@@ -1,4 +1,8 @@
 #!/usr/bin/bash
+"""
+run:
+./deploy sopier hotoid.com hotoid.com.tar.gz
+"""
 
 fab create_user:$1
 fab create_key
