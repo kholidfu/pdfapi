@@ -7,8 +7,6 @@ What you need to run this:
 1. zipped app/ run.py and uwsgi.ini
 2. default file which contain nginx conf
 3. id_rsa.pub to connect to server without password prompt
-4. supervisord.conf file ditaruh di /home/sopier :: not yet
-5. bikin run.py baru dengan if __name__
 
 todo:
 1. change server_names_hash_bucket_size 64 di /etc/nginx/nginx.conf :: not yet
@@ -74,6 +72,7 @@ def setup_nginx():
     env.key_filename = "/home/banteng/.ssh/id_rsa"
     local("scp default root@" + f.droplet_ip() \
           + ":/etc/nginx/sites-available/default")
+    sudo("sed -i 's/.*64.*/server_names_hash_bucket_size 64;/' /etc/nginx/nginx.conf")
     sudo("/etc/init.d/nginx restart")
 
 def set_supervisor(domain):
