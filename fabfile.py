@@ -104,4 +104,4 @@ def deploy_site(site):
     upload_package(site + ".tar.gz", site)
     setup_nginx()
     set_supervisor(site)
-    run_site(site)
+    run_site()
