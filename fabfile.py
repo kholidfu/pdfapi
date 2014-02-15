@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # author: @sopier
 """
-Automate server deployment
+Automate flask app deployment
 
 What you need to run this:
 1. zipped app/ run.py and uwsgi.ini
