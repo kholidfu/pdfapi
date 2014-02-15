@@ -20,9 +20,12 @@ from farmers import Farmers
 f = Farmers()
 env.hosts = [f.droplet_ip()]
 
+def add_domain(site):
+    """ adding domain to DO"""
+    f.add_domains(site)
+
 def create_user():
     env.user = "root"
-    run("userdel -r sopier")
     run("adduser sopier")
     run("adduser sopier sudo")
 
@@ -98,6 +101,7 @@ def setup_server():
     install_packages()
 
 def deploy_site(site):
+    add_domain("www." + site)
     create_venv(site)
     install_packages_venv(site)
     upload_package(site + ".tar.gz", site)
