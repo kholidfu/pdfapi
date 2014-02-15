@@ -7,8 +7,8 @@ import sys
 
 class Farmers(object):
 
-    CLIENT_ID = 'your_client_id'
-    API_KEY = 'your_api_key'
+    CLIENT_ID = 'client_id'
+    API_KEY = 'api_key'
 
     def __init__(self):
         pass
@@ -24,23 +24,22 @@ class Farmers(object):
         droplets = client.show_active_droplets()
         return [droplet.to_json() for droplet in droplets][-1]['ip_address']
 
-    def add_domains(self, domains):
+    def add_domain(self, domain):
         """ step 2: add domain to droplet """
         ip_address = self.droplet_ip()
 
-        for domain in domains:
-            urllib2.urlopen(
-                "https://api.digitalocean.com/domains/new?client_id=" \
-                + self.CLIENT_ID + "&api_key=" + self.API_KEY + "&name=" \
-                + domain + "&ip_address=" + ip_address)
+        urllib2.urlopen(
+            "https://api.digitalocean.com/domains/new?client_id=" \
+            + self.CLIENT_ID + "&api_key=" + self.API_KEY + "&name=" \
+            + domain + "&ip_address=" + ip_address)
 
 
 if __name__ == "__main__":
     f = Farmers()
     sys.stdout.write("preparing to create droplet...\n")
-    f.create_droplet(sys.argv[2])
+    f.create_droplet(sys.argv[1])
     sys.stdout.write("droplet successfully created!\n")
-    f.add_domains(sys.argv[3:])
+    f.add_domains(sys.argv[2])
     sys.stdout.write("all domains added...\n")
 
 # setelah ini bisa berlanjut ke namecheap API
