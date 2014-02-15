@@ -73,14 +73,20 @@ def setup_nginx():
           + ":/etc/nginx/sites-available/default")
     sudo("/etc/init.d/nginx restart")
 
-def run_the_site(domain):
-    """ run the site!"""
+def set_supervisor(domain):
+    """ setup for supervisor """
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
     local("scp supervisord.conf run.py sopier@" + f.droplet_ip() + ":/home/sopier/" + domain)
-    run("cd /home/sopier/" + domain + " && sudo supervisord")
 
-def deploy_server():
+def run_site(domain):
+    """ run the site """
+    env.user = "sopier"
+    env.key_filename = "/home/banteng/.ssh/id_rsa"
+    run("cd /home/sopier/" + domain + " && sudo supervisor "\
+        " supervisor stop && sudo supervisor start")
+
+def setup_server():
     create_user()
     create_key()
     install_packages()
@@ -90,4 +96,5 @@ def deploy_site(site):
     install_packages_venv(site)
     upload_package(site + ".tar.gz", site)
     setup_nginx()
-    run_the_site(site)
+    set_supervisor(site)
+    run_site(site)
