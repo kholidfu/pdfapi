@@ -7,7 +7,7 @@ What you need to run this:
 1. zipped app/ run.py and uwsgi.ini
 2. default file which contain nginx conf
 3. id_rsa.pub to connect to server without password prompt
-4.
+4. supervisord.conf 
 """
 
 # fabric thing
@@ -73,8 +73,8 @@ def run_the_site(domain):
     """ run the site!"""
     env.user = "sopier"
     env.key_filename = "/home/banteng/.ssh/id_rsa"
-    #local("scp supervisord.conf sopier@" + f.droplet_ip() + ":/home/sopier/" + domain)
-    run("sudo supervisord -c /home/sopier/" + domain + "/supervisord.conf")
+    local("scp supervisord.conf sopier@" + f.droplet_ip() + ":/home/sopier/" + domain)
+    run("cd /home/sopier/" + domain + " && sudo supervisord")
 
 """
 todo:
