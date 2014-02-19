@@ -1,5 +1,4 @@
 # author: @sopier
-
 from flask import render_template, request, redirect, send_from_directory
 from flask import make_response # untuk sitemap
 from flask import jsonify
@@ -10,6 +9,12 @@ from werkzeug.contrib.atom import AtomFeed
 from bson.objectid import ObjectId
 from filters import slugify
 import datetime
+import pymongo
+import json
+
+c = pymongo.Connection()
+termsdb = c["terms"]
+
 
 @app.template_filter()
 def slug(s):
@@ -72,17 +77,10 @@ def keyword_search(keyword):
 @app.route("/terms/api/v1.0/latest")
 def get_terms():
     """Return 30 latest data from database."""
-    data = {
-        "terms": [
-            {
-                "keyword": "manual"
-            },
-            {
-                "keyword": "automatic"
-                }
-        ]
-    }
-    return jsonify(data)
+    data = [i for i in termsdb.term.find().sort("_id", -1).limit(30)]
+    resp = make_response(json.dumps(data))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
 
 @app.route("/terms/api/v1.0/search/<keyword>")
 def term_search(keyword):
