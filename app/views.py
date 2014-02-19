@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # author: @sopier
 from flask import render_template, request, redirect, send_from_directory
 from flask import make_response # untuk sitemap
