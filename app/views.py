@@ -74,11 +74,18 @@ def keyword_search(keyword):
             ]}
     return jsonify(data)
 
+class Encoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, ObjectId):
+            return str(obj)
+        else:
+            return obj
+
 @app.route("/terms/api/v1.0/latest")
 def get_terms():
     """Return 30 latest data from database."""
     data = [i for i in termsdb.term.find().sort("_id", -1).limit(30)]
-    resp = make_response(json.dumps(data))
+    resp = make_response(json.dumps({'results': data}, cls=Encoder))
     resp.headers["Content-Type"] = "application/json"
     return resp
 
