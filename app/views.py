@@ -92,18 +92,11 @@ def get_terms():
 
 @app.route("/terms/api/v1.0/search/<keyword>")
 def term_search(keyword):
-    """Return 30 latest data from database."""
-    data = {
-        "terms": [
-            {
-                "keyword": "manual"
-            },
-            {
-                "keyword": "automatic"
-            }
-        ]
-    }
-    return jsonify(data)
+    """Search and return 30 results from database."""
+    data = termsdb.command('text', 'term', search=keyword)
+    resp = make_response(json.dumps({'results': data}, cls=Encoder))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
 
 @app.route("/gsuggests/api/v1.0/latest")
 def get_gsuggests():
