@@ -15,6 +15,9 @@ import json
 
 c = pymongo.Connection()
 termsdb = c["terms"]
+pdfdb = c["pdfs"]
+gsuggestdb = c["gsuggests"]
+bsuggestdb = c["bsuggests"]
 
 
 @app.template_filter()
@@ -47,8 +50,8 @@ def stats():
     """Return statistics data from mongo."""
     pdfdbnum = pdfdb.pdf.find().count()
     termsdbnum = termsdb.term.find().count()
-    gsuggestsnum = gsuggests.suggest.find().count()
-    bsuggestsnum = bsuggests.suggest.find().count()
+    gsuggestsnum = gsuggestdb.suggest.find().count()
+    bsuggestsnum = bsuggestdb.suggest.find().count()
     resp = make_response(json.dumps({
         'pdf': pdfdbnum,
         'terms': termsdbnum,
