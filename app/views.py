@@ -93,7 +93,7 @@ def get_terms():
 @app.route("/terms/api/v1.0/search/<keyword>")
 def term_search(keyword):
     """Search and return 30 results from database."""
-    data = termsdb.command('text', 'term', search=keyword)
+    data = termsdb.command('text', 'term', search=keyword, limit=3)
     resp = make_response(json.dumps({'results': data}, cls=Encoder))
     resp.headers["Content-Type"] = "application/json"
     return resp
