@@ -35,6 +35,29 @@ def robots():
 def index():
     return render_template("index.html")
 
+class Encoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, ObjectId):
+            return str(obj)
+        else:
+            return obj
+
+@app.route("/stats")
+def stats():
+    """Return statistics data from mongo."""
+    pdfdbnum = pdfdb.pdf.find().count()
+    termsdbnum = termsdb.term.find().count()
+    gsuggestsnum = gsuggests.suggest.find().count()
+    bsuggestsnum = bsuggests.suggest.find().count()
+    resp = make_response(json.dumps({
+        'pdf': pdfdbnum,
+        'terms': termsdbnum,
+        'google_suggest': gsuggestsnum,
+        'bing_suggest': bsuggestsnum,
+        }, cls=Encoder))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
 @app.route("/pdf/api/v1.0/latest")
 def get_docs():
     """Return 30 latest data from database."""
@@ -75,12 +98,6 @@ def keyword_search(keyword):
             ]}
     return jsonify(data)
 
-class Encoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, ObjectId):
-            return str(obj)
-        else:
-            return obj
 
 @app.route("/terms/api/v1.0/latest")
 def get_terms():
@@ -93,7 +110,7 @@ def get_terms():
 @app.route("/terms/api/v1.0/search/<keyword>")
 def term_search(keyword):
     """Search and return 30 results from database."""
-    data = termsdb.command('text', 'term', search=keyword, limit=3)
+    data = termsdb.command('text', 'term', search=keyword, limit=30)
     resp = make_response(json.dumps({'results': data}, cls=Encoder))
     resp.headers["Content-Type"] = "application/json"
     return resp
