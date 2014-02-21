@@ -81,6 +81,15 @@ def keyword_search(keyword):
     resp.headers["Content-Type"] = "application/json"
     return resp
 
+@app.route("/pdf/api/v1.0/single/<oid>")
+def get_single_doc(oid):
+    """Search for single data in database."""
+    data = pdfdb.pdf.find_one({"_id": ObjectId(oid)})
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
 @app.route("/terms/api/v1.0/latest")
 def get_terms():
     """Return 30 latest data from database."""
