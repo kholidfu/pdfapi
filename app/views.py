@@ -65,7 +65,7 @@ def stats():
 @app.route("/pdf/api/v1.0/latest")
 def get_docs():
     """Return 30 latest data from database."""
-    data = [i for i in pdfdb.pdf.find().limit(30)]
+    data = [i for i in pdfdb.pdf.find().sort("_id", -1).limit(30)]
     resp = make_response(json.dumps({'results': data},
                                     default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
@@ -80,7 +80,9 @@ def keyword_search(keyword):
 def get_terms():
     """Return 30 latest data from database."""
     data = [i for i in termsdb.term.find().sort("_id", -1).limit(30)]
-    resp = make_response(json.dumps({'results': data}, cls=Encoder))
+    #resp = make_response(json.dumps({'results': data}, cls=Encoder))
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
     return resp
 
