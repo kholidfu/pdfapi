@@ -64,7 +64,7 @@ def stats():
 @app.route("/pdf/api/v1.0/latest")
 def get_docs():
     """Return 30 latest data from database."""
-    data = [i for i in pdfdb.pdf.find()]
+    data = [i for i in pdfdb.pdf.find().limit(30)]
     resp = make_response(json.dumps({'results': data}, cls=Encoder))
     resp.headers["Content-Type"] = "application/json"
     return resp
