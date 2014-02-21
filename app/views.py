@@ -39,7 +39,7 @@ def robots():
 def index():
     return render_template("index.html")
 
-class ObjectIdEncoder(json.JSONEncoder):
+class Encoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, ObjectId):
             return str(obj)
