@@ -44,7 +44,7 @@ class Encoder(json.JSONEncoder):
             return str(obj)
         else:
             #return obj
-            return json.JSONEncoder.default(obj)
+            return json.JSONEncoder.default(self, obj)
 
 @app.route("/stats")
 def stats():
