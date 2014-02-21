@@ -8,6 +8,7 @@ from app import app
 # atom feed
 from werkzeug.contrib.atom import AtomFeed
 from bson.objectid import ObjectId
+from bson import json_util
 from filters import slugify
 import datetime
 import pymongo
@@ -38,13 +39,12 @@ def robots():
 def index():
     return render_template("index.html")
 
-class Encoder(json.JSONEncoder):
+class ObjectIdEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, ObjectId):
             return str(obj)
         else:
-            #return obj
-            return json.JSONEncoder.default(self, obj)
+            return obj
 
 @app.route("/stats")
 def stats():
@@ -66,7 +66,8 @@ def stats():
 def get_docs():
     """Return 30 latest data from database."""
     data = [i for i in pdfdb.pdf.find().limit(30)]
-    resp = make_response(json.dumps({'results': data}, cls=Encoder))
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
     return resp
 
