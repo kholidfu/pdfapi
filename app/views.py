@@ -85,7 +85,6 @@ def keyword_search(keyword):
 def get_terms():
     """Return 30 latest data from database."""
     data = [i for i in termsdb.term.find().sort("_id", -1).limit(30)]
-    #resp = make_response(json.dumps({'results': data}, cls=Encoder))
     resp = make_response(json.dumps({'results': data},
                                     default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
@@ -103,63 +102,38 @@ def term_search(keyword):
 @app.route("/gsuggests/api/v1.0/latest")
 def get_gsuggests():
     """Return 30 latest data from database."""
-    data = {
-        "suggests": [
-            {
-                "word": "relate"
-            },
-            {
-                "word": "unrelated"
-                }
-        ]
-    }
-    return jsonify(data)
+    data = [i for i in gsuggestdb.suggest.find().sort("_id", -1).limit(30)]
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
 
 @app.route("/gsuggests/api/v1.0/search/<keyword>")
 def gsuggests_search(keyword):
-    """Return 30 latest data from database."""
-    data = {
-        "terms": [
-            {
-                "word": "related"
-            },
-            {
-                "word": "unrelated"
-            }
-        ]
-    }
-    return jsonify(data)
+    """Search and return 30 latest data from database."""
+    data = gsuggestdb.command('text', 'suggest', search=keyword, limit=30)
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
 
 @app.route("/bsuggests/api/v1.0/latest")
 def get_bsuggests():
     """Return 30 latest data from database."""
-    data = {
-        "suggests": [
-            {
-                "word": "relate"
-            },
-            {
-                "word": "unrelated"
-                }
-        ]
-    }
-    return jsonify(data)
+    data = [i for i in bsuggestdb.suggest.find().sort("_id", -1).limit(30)]
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
 
 @app.route("/bsuggests/api/v1.0/search/<keyword>")
 def bsuggests_search(keyword):
-    """Return 30 latest data from database."""
-    data = {
-        "terms": [
-            {
-                "word": "related"
-            },
-            {
-                "word": "unrelated"
-            }
-        ]
-    }
-    return jsonify(data)
-
+    """Search and return 30 latest data from database."""
+    data = bsuggestdb.command('text', 'suggest', search=keyword, limit=30)
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
 
 @app.route("/sitemap.xml")
 def sitemap():
