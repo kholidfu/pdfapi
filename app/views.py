@@ -74,8 +74,12 @@ def get_docs():
 
 @app.route("/pdf/api/v1.0/search/<keyword>")
 def keyword_search(keyword):
-    pass
-
+    """Search and return 30 results from database."""
+    data = pdfdb.command('text', 'pdf', search=keyword, limit=30)
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
 
 @app.route("/terms/api/v1.0/latest")
 def get_terms():
