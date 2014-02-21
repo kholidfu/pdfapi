@@ -39,6 +39,7 @@ def robots():
 def index():
     return render_template("index.html")
 
+# just-in-case we need it in the future
 class Encoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, ObjectId):
@@ -90,7 +91,8 @@ def get_terms():
 def term_search(keyword):
     """Search and return 30 results from database."""
     data = termsdb.command('text', 'term', search=keyword, limit=30)
-    resp = make_response(json.dumps({'results': data}, cls=Encoder))
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
     return resp
 
