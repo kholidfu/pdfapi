@@ -71,23 +71,7 @@ def get_docs():
 
 @app.route("/pdf/api/v1.0/search/<keyword>")
 def keyword_search(keyword):
-    """Return 30 latest data from database."""
-    data = {
-        "results": [
-            {
-                "name": "sopier",
-                "age": 30,
-                "occupation": "unclear",
-                "address": "sleman"
-            },
-            {
-                "name": "sopier2",
-                "age": 20,
-                "occupation": "unclear2",
-                "address": "mbantul"
-                }
-            ]}
-    return jsonify(data)
+    pass
 
 
 @app.route("/terms/api/v1.0/latest")
