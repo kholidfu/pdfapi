@@ -143,25 +143,3 @@ def bsuggests_search(keyword):
                                     default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
     return resp
-
-@app.route("/sitemap.xml")
-def sitemap():
-    # data = db.freewaredata.find()
-    # sitemap_xml = render_template("sitemap.xml", data=data)
-    # response = make_response(sitemap_xml)
-    # response.headers['Content-Type'] = 'application/xml'
-
-    # return response
-    pass
-
-@app.route('/recent.atom')
-def recent_feed():
-    # http://werkzeug.pocoo.org/docs/contrib/atom/
-    # wajibun: id(link) dan updated
-    # feed = AtomFeed('Recent Articles',
-    #                feed_url = request.url, url=request.url_root)
-    # data = datas
-    # for d in data:
-    #    feed.add(d['nama'], content_type='html', id=d['id'], updated=datetime.datetime.now())
-    # return feed.get_response()
-    pass
