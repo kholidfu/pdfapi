@@ -120,7 +120,7 @@ def get_gsuggests():
 @app.route("/gsuggests/api/v1.0/search/<keyword>")
 def gsuggests_search(keyword):
     """Search and return 30 latest data from database."""
-    data = gsuggestdb.command('text', 'suggest', search=keyword, limit=30)
+    data = gsuggestdb.command('text', 'suggest', search=keyword, limit=5)
     resp = make_response(json.dumps({'results': data},
                                     default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
@@ -138,7 +138,7 @@ def get_bsuggests():
 @app.route("/bsuggests/api/v1.0/search/<keyword>")
 def bsuggests_search(keyword):
     """Search and return 30 latest data from database."""
-    data = bsuggestdb.command('text', 'suggest', search=keyword, limit=30)
+    data = bsuggestdb.command('text', 'suggest', search=keyword, limit=5)
     resp = make_response(json.dumps({'results': data},
                                     default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
