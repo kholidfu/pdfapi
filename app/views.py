@@ -74,12 +74,23 @@ def get_docs():
 
 @app.route("/pdf/api/v1.0/search/<keyword>")
 def keyword_search(keyword):
-    """Search and return 30 results from database."""
-    data = pdfdb.command('text', 'pdf', search=keyword, limit=30)
+    """Search and return 10 results from database."""
+    data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
     resp = make_response(json.dumps({'results': data},
                                     default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
     return resp
+
+@app.route("/pdf/api/v1.0/search/<keyword>/<num>")
+def keyword_search(keyword, num):
+    """Search and return (based on paging number) results from database."""
+    data = pdfdb.command('text', 'pdf', search=keyword,
+                         skip=10 * int(num) - 10, limit=10)
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
 
 @app.route("/pdf/api/v1.0/single/<oid>")
 def get_single_doc(oid):
