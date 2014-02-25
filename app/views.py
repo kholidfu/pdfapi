@@ -81,6 +81,18 @@ def keyword_search(keyword):
     resp.headers["Content-Type"] = "application/json"
     return resp
 
+@app.route("/pdf/api/v1.0/search/<keyword>/<page>")
+def keyword_search(keyword, page):
+    """Search and return 10 results from database."""
+    data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
+    start = int(page) * 10 - 10
+    end = int(page) * 2
+    data = [i for i in data['results']][start:end]
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
 @app.route("/pdf/api/v1.0/single/<oid>")
 def get_single_doc(oid):
     """Search for single data in database."""
