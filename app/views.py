@@ -82,7 +82,7 @@ def keyword_search(keyword):
     return resp
 
 @app.route("/pdf/api/v1.0/search/<keyword>/<page>")
-def keyword_search(keyword, page):
+def keyword_search_paging(keyword, page):
     """Search and return 10 results from database."""
     data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
     start = int(page) * 10 - 10
