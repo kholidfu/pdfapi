@@ -84,7 +84,7 @@ def keyword_search(keyword):
 @app.route("/pdf/api/v1.0/search/<keyword>/<page>")
 def keyword_search_paging(keyword, page):
     """Search and return 10 results from database."""
-    data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
+    data = pdfdb.command('text', 'pdf', search=keyword, limit=30)
     start = int(page) * 10 - 10
     end = int(page) * 2
     data = [i for i in data['results']][start:end]
