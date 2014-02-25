@@ -82,7 +82,7 @@ def keyword_search(keyword):
     return resp
 
 @app.route("/pdf/api/v1.0/search/<keyword>/<num>")
-def keyword_search(keyword, num):
+def keyword_search_paging(keyword, num):
     """Search and return (based on paging number) results from database."""
     data = pdfdb.command('text', 'pdf', search=keyword,
                          skip=10 * int(num) - 10, limit=10)
