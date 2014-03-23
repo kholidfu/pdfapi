@@ -89,7 +89,7 @@ def keyword_search_redis(keyword):
     """Search and return 10 results from database."""
 
     # if redis data exist
-    if r.hmget(keyword, "results'):
+    if r.hmget(keyword, "results"):
         data = r.hmget(keyword, "results")
     # query mongo
     else:
