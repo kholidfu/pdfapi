@@ -91,12 +91,7 @@ def keyword_search_redis(keyword):
     # if redis data exist
     if r.get(keyword):
         data = r.get(keyword)
-<<<<<<< HEAD
         resp = make_response(json.dumps({'results': json.loads(data)}))
-=======
-        resp = make_response(json.dumps({'results': json.loads(data)},
-                                    default=json_util.default))
->>>>>>> 3f22046a80a05281f6b0980c9cd8331c41fbd1a3
 
     # query mongo
     else:
@@ -104,12 +99,8 @@ def keyword_search_redis(keyword):
         r.set(keyword, data) # push data
         r.expire(keyword, 10) # set expire
         resp = make_response(json.dumps({'results': data},
-<<<<<<< HEAD
                                         default=json_util.default))
-=======
-                                    default=json_util.default))
 
->>>>>>> 3f22046a80a05281f6b0980c9cd8331c41fbd1a3
     resp.headers["Content-Type"] = "application/json"
     return resp
 
