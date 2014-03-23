@@ -89,12 +89,12 @@ def keyword_search_redis(keyword):
     """Search and return 10 results from database."""
 
     # if redis data exist
-    if r.get(keyword):
-        data = r.get(keyword)
+    if r.hmget(keyword):
+        data = r.hmget(keyword)
     # query mongo
     else:
         data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
-        r.set(keyword, data) # push data
+        r.hmset(keyword, data) # push data
         r.expire(keyword, 10) # set expire
 
     resp = make_response(json.dumps({'results': data},
