@@ -87,14 +87,13 @@ r = redis.Redis()
 @app.route("/pdf/api/v1.1/search/<keyword>")
 def keyword_search_redis(keyword):
     """Search and return 10 results from database."""
-    data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
 
     # if redis data exist
     if r.lrange(keyword, 0, -1):
         data = r.lrange(keyword, 0, -1)
     # query mongo
     else:
-        data = [i for i in data['results']][start:end]
+        data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
         for d in data:
             r.rpush(keyword, data) # push data
         r.expire(keyword, 10) # set expire
