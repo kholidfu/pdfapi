@@ -91,7 +91,7 @@ def keyword_search_redis(keyword):
     # if redis data exist
     if r.get(keyword):
         data = r.get(keyword)
-        resp = make_response(json.dumps({'results': json.loads(data)}))
+        resp = make_response(json.dumps({'results': data}))
 
     # query mongo
     else:
