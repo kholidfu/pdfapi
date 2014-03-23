@@ -98,12 +98,13 @@ def keyword_search_redis(keyword):
         data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
         r.hmset(keyword, {"results": data}) # push data
         r.expire(keyword, 10) # set expire
-        
-    resp = make_response(json.dumps({'results': data},
-                                    default=json_util.default))
 
-    resp.headers["Content-Type"] = "application/json"
-    return resp
+        #resp = make_response(json.dumps({'results': data},
+        #default=json_util.default))
+
+        #resp.headers["Content-Type"] = "application/json"
+        #return resp
+    return data
 
 @app.route("/pdf/api/v1.0/search/<keyword>/<page>")
 def keyword_search_paging(keyword, page):
