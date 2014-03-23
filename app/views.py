@@ -83,29 +83,24 @@ def keyword_search(keyword):
     return resp
 
 r = redis.Redis()
-import cPickle
 
 @app.route("/pdf/api/v1.1/search/<keyword>")
 def keyword_search_redis(keyword):
     """Search and return 10 results from database."""
 
     # if redis data exist
-    if r.get(keyword):
-        data = r.get(keyword)
-        data = json.loads(cPickle.loads(data))
+    if r.lrange(keyword, 0, -1):
+        data = r.lrange(keyword, 0, -1)
     # query mongo
     else:
         data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
-        # cpikle data first
-        data = cPickle.dumps(data)
-        r.set(keyword, data) # push data
+        r.rpush(keyword, data) # push data
         r.expire(keyword, 10) # set expire
 
-    #resp = make_response(json.dumps({'results': data},
-    #default=json_util.default))
-    #resp.headers["Content-Type"] = "application/json"
-    #return resp
-    return data
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
 
 @app.route("/pdf/api/v1.0/search/<keyword>/<page>")
 def keyword_search_paging(keyword, page):
