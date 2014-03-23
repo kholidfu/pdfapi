@@ -13,6 +13,7 @@ from filters import slugify
 import datetime
 import pymongo
 import json
+import redis
 
 c = pymongo.Connection()
 termsdb = c["terms"]
@@ -92,6 +93,29 @@ def keyword_search_paging(keyword, page):
                                     default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
     return resp
+
+r = redis.Redis()
+
+@app.route("/pdf/api/v1.1/search/<keyword>/<page>")
+def keyword_search_paging_redis(keyword, page):
+    """Search and return 10 results from database."""
+    data = pdfdb.command('text', 'pdf', search=keyword, limit=30)
+    start = int(page) * 10 - 10
+    end = int(page) * 10
+
+    # if redis data exist
+    if r.lrange(keyword, 0, -1):
+        data = r.lrange(keyword, 0, -1)
+    # query mongo
+    else:
+        data = [i for i in data['results']][start:end]
+        r.rpush(keyword, data) # push data
+        r.expire(keyword, 10) # set expire
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
 
 @app.route("/pdf/api/v1.0/single/<oid>")
 def get_single_doc(oid):
