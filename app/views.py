@@ -100,11 +100,11 @@ def keyword_search_redis(keyword):
         r.expire(keyword, 10) # set expire
 
         #resp = make_response(json.dumps({'results': data},
-        #default=json_util.default))
+        #                           default=json_util.default))
+        resp = make_response({'results': data})
 
-        #resp.headers["Content-Type"] = "application/json"
-        #return resp
-    return data
+    resp.headers["Content-Type"] = "application/json"
+    return resp
 
 @app.route("/pdf/api/v1.0/search/<keyword>/<page>")
 def keyword_search_paging(keyword, page):
