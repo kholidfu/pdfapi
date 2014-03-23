@@ -98,7 +98,7 @@ def keyword_search_redis(keyword):
     else:
         data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
         #r.hmset(keyword, {"results": data}) # push data
-        r.set(keyword) # push data
+        r.set(keyword, data) # push data
         r.expire(keyword, 10) # set expire
 
     resp = make_response(json.dumps({'results': data},
