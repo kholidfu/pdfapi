@@ -92,12 +92,12 @@ def keyword_search_redis(keyword):
     # if redis data exist
     if r.get(keyword):
         data = r.get(keyword)
-        data = cPickle.load(data)
+        data = json.loads(cPickle.loads(data))
     # query mongo
     else:
         data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
         # cpikle data first
-        data = cPickle.dump(data)
+        data = cPickle.dumps(data)
         r.set(keyword, data) # push data
         r.expire(keyword, 10) # set expire
 
