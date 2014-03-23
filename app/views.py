@@ -90,19 +90,19 @@ def keyword_search_redis(keyword):
 
     # if redis data exist
     if r.get(keyword):
-        data = r.hget(keyword, "results")
+        #data = r.hget(keyword, "results")
+        data = r.get(keyword)
         #resp = make_response(json.dumps({'results': data}))
 
     # query mongo
     else:
         data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
-        r.hmset(keyword, {"results": data}) # push data
+        #r.hmset(keyword, {"results": data}) # push data
+        r.set(keyword) # push data
         r.expire(keyword, 10) # set expire
 
-        #resp = make_response(json.dumps({'results': data},
-        #                           default=json_util.default))
-        resp = make_response({'results': data})
-
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
     return resp
 
