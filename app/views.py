@@ -90,7 +90,7 @@ def keyword_search_redis(keyword):
 
     # if redis data exist
     if r.get(keyword):
-        data = json.loads(r.get(keyword))
+        data = r.get(keyword)
     # query mongo
     else:
         data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
