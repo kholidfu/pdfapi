@@ -90,7 +90,7 @@ def keyword_search_redis(keyword):
 
     # if redis data exist
     if r.hmget(keyword):
-        data = r.hmget(keyword)
+        data = r.hmget(keyword, "results")
     # query mongo
     else:
         data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
