@@ -83,22 +83,23 @@ def keyword_search(keyword):
     return resp
 
 r = redis.Redis()
+import cPickle
 
 @app.route("/pdf/api/v1.1/search/<keyword>")
 def keyword_search_redis(keyword):
     """Search and return 10 results from database."""
 
     # if redis data exist
-    if r.get(keyword):
+    if r.get(keyword) is not None:
         #data = r.hget(keyword, "results")
-        data = r.get(keyword)
+        data = cPickle.loads(r.get(keyword))
         #resp = make_response(json.dumps({'results': data}))
 
     # query mongo
     else:
         data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
         #r.hmset(keyword, {"results": data}) # push data
-        r.set(keyword, data) # push data
+        r.set(keyword, cPickle.dumps(data)) # push data
         r.expire(keyword, 10) # set expire
 
     resp = make_response(json.dumps({'results': data},
