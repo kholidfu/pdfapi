@@ -91,16 +91,12 @@ def keyword_search_redis(keyword):
 
     # if redis data exist
     if r.get(keyword) is not None:
-        #data = r.hget(keyword, "results")
         data = cPickle.loads(r.get(keyword))
-        #resp = make_response(json.dumps({'results': data}))
-
-    # query mongo
+    # else, query mongo
     else:
         data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
-        #r.hmset(keyword, {"results": data}) # push data
         r.set(keyword, cPickle.dumps(data)) # push data
-        r.expire(keyword, 10) # set expire
+        r.expire(keyword, 60 * 60 * 24) # set expire for 1 day
 
     resp = make_response(json.dumps({'results': data},
                                     default=json_util.default))
