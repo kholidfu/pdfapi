@@ -188,13 +188,13 @@ def gsuggests_search_redis(keyword):
     """Search and return 30 latest data from database."""
 
     # if redis data exist
-    if r.get(keyword) is not None:
-        data = cPickle.loads(r.get(keyword))
+    if r.get("gsuggest:" + keyword) is not None:
+        data = cPickle.loads(r.get("gsuggest:" + keyword))
     # else, query mongo
     else:
         data = gsuggestdb.command('text', 'suggest', search=keyword, limit=5)
-        r.set(keyword, cPickle.dumps(data)) # push data
-        r.expire(keyword, 60 * 60 * 24) # set expire for 1 day
+        r.set("gsuggest:" + keyword, cPickle.dumps(data)) # push data
+        r.expire("gsuggest:" + keyword, 60 * 60 * 24) # set expire for 1 day
 
     resp = make_response(json.dumps({'results': data},
                                     default=json_util.default))
@@ -224,13 +224,13 @@ def bsuggests_search_redis(keyword):
     """Search and return 30 latest data from database."""
         
     # if redis data exist
-    if r.get(keyword) is not None:
-        data = cPickle.loads(r.get(keyword))
+    if r.get("bsuggest:" + keyword) is not None:
+        data = cPickle.loads(r.get("bsuggest:" + keyword))
     # else, query mongo
     else:
         data = bsuggestdb.command('text', 'suggest', search=keyword, limit=5)
-        r.set(keyword, cPickle.dumps(data)) # push data
-        r.expire(keyword, 60 * 60 * 24) # set expire for 1 day
+        r.set("bsuggest:" + keyword, cPickle.dumps(data)) # push data
+        r.expire("bsuggest:" + keyword, 60 * 60 * 24) # set expire for 1 day
 
     resp = make_response(json.dumps({'results': data},
                                     default=json_util.default))
