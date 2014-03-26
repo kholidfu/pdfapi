@@ -115,6 +115,29 @@ def keyword_search_paging(keyword, page):
     resp.headers["Content-Type"] = "application/json"
     return resp
 
+@app.route("/pdf/api/v1.1/search/<keyword>/<page>")
+def keyword_search_paging_redis(keyword, page):
+    """Search and return 10 results from database."""
+
+    # set start and end number for paging
+    start = int(page) * 10 - 10
+    end = int(page) * 10
+
+    # if redis data exist
+    if r.get(keyword) is not None:
+        data = cPickle.loads(r.get(keyword))
+    # else, query mongo
+    else:
+        data = pdfdb.command('text', 'pdf', search=keyword, limit=30)
+        r.set(keyword, cPickle.dumps(data)) # push data
+        r.expire(keyword, 60 * 60 * 24) # set expire for 1 day
+
+    data = [i for i in data['results']][start:end]
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
 @app.route("/pdf/api/v1.0/single/<oid>")
 def get_single_doc(oid):
     """Search for single data in database."""
@@ -160,6 +183,24 @@ def gsuggests_search(keyword):
     resp.headers["Content-Type"] = "application/json"
     return resp
 
+@app.route("/gsuggests/api/v1.1/search/<keyword>")
+def gsuggests_search_redis(keyword):
+    """Search and return 30 latest data from database."""
+
+    # if redis data exist
+    if r.get(keyword) is not None:
+        data = cPickle.loads(r.get(keyword))
+    # else, query mongo
+    else:
+        data = gsuggestdb.command('text', 'suggest', search=keyword, limit=5)
+        r.set(keyword, cPickle.dumps(data)) # push data
+        r.expire(keyword, 60 * 60 * 24) # set expire for 1 day
+
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
 @app.route("/bsuggests/api/v1.0/latest")
 def get_bsuggests():
     """Return 30 latest data from database."""
@@ -173,6 +214,24 @@ def get_bsuggests():
 def bsuggests_search(keyword):
     """Search and return 30 latest data from database."""
     data = bsuggestdb.command('text', 'suggest', search=keyword, limit=5)
+    resp = make_response(json.dumps({'results': data},
+                                    default=json_util.default))
+    resp.headers["Content-Type"] = "application/json"
+    return resp
+
+@app.route("/bsuggests/api/v1.1/search/<keyword>")
+def bsuggests_search_redis(keyword):
+    """Search and return 30 latest data from database."""
+        
+    # if redis data exist
+    if r.get(keyword) is not None:
+        data = cPickle.loads(r.get(keyword))
+    # else, query mongo
+    else:
+        data = bsuggestdb.command('text', 'suggest', search=keyword, limit=5)
+        r.set(keyword, cPickle.dumps(data)) # push data
+        r.expire(keyword, 60 * 60 * 24) # set expire for 1 day
+
     resp = make_response(json.dumps({'results': data},
                                     default=json_util.default))
     resp.headers["Content-Type"] = "application/json"
