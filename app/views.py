@@ -94,7 +94,7 @@ def keyword_search_redis(keyword):
         data = cPickle.loads(r.get(keyword))
     # else, query mongo
     else:
-        data = pdfdb.command('text', 'pdf', search=keyword, limit=10)
+        data = pdfdb.command('text', 'pdf', search=keyword, limit=30)
         r.set(keyword, cPickle.dumps(data)) # push data
         r.expire(keyword, 60 * 60 * 24) # set expire for 1 day
 
