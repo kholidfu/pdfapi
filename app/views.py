@@ -211,7 +211,7 @@ def get_bsuggests():
     return resp
 
 @app.route("/bsuggests/api/v1.0/search/<keyword>")
-def bsuggests_search_redis(keyword):
+def bsuggests_search(keyword):
     """Search and return 30 latest data from database."""
     data = bsuggestdb.command('text', 'suggest', search=keyword, limit=5)
     resp = make_response(json.dumps({'results': data},
